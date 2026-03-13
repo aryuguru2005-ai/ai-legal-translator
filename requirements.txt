@@ -1,12 +1,5 @@
 python-multipart
-
-
-
 fastapi
-
-
-
-
 uvicorn
 google-genai
 pytesseract
