@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>AI Legal Document Translator</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f7fb;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.container{
+background:white;
+padding:40px;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+text-align:center;
+width:420px;
+}
+
+h1{
+margin-bottom:20px;
+color:#333;
+}
+
+input[type=file]{
+margin-top:10px;
+}
+
+button{
+margin-top:20px;
+padding:12px 25px;
+border:none;
+background:#4CAF50;
+color:white;
+font-size:16px;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#43a047;
+}
+
+#loader{
+display:none;
+margin-top:20px;
+}
+
+.spinner{
+border:6px solid #f3f3f3;
+border-top:6px solid #4CAF50;
+border-radius:50%;
+width:40px;
+height:40px;
+animation:spin 1s linear infinite;
+margin:auto;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+a{
+display:block;
+margin-top:20px;
+font-weight:bold;
+color:#2e7d32;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>AI Legal Document Translator</h1>
+
+<form id="uploadForm">
+<input type="file" id="pdfFile" accept=".pdf" required>
+<br>
+<button type="submit">Translate Document</button>
+</form>
+
+<div id="loader">
+<div class="spinner"></div>
+<p id="statusText">Waiting for file...</p>
+</div>
+
+<a id="downloadLink" style="display:none"></a>
+
+</div>
+
+<script>
+
+document.getElementById("uploadForm").addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+const fileInput=document.getElementById("pdfFile");
+
+const formData=new FormData();
+formData.append("file",fileInput.files[0]);
+
+document.getElementById("loader").style.display="block";
+document.getElementById("statusText").innerText = "Uploading file...";
+
+const response=await fetch("/upload-pdf/",{
+method:"POST",
+body:formData
+});
+
+const blob=await response.blob();
+
+const url=window.URL.createObjectURL(blob);
+
+const link=document.getElementById("downloadLink");
+link.href=url;
+link.download="translated_document.pdf";
+link.innerText="Download Translated PDF";
+link.style.display="block";
+
+document.getElementById("statusText").innerText="Translation completed.";
+document.getElementById("loader").style.display="none";
+
+});
+
+</script>
+
+</body>
+</html>

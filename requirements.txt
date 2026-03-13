@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+google-genai
+pytesseract
+pdf2image
+pymupdf
+pillow
+reportlab
+jinja2
